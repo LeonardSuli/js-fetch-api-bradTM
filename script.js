@@ -1,8 +1,11 @@
-const button = document.getElementById('getText');
+const text = document.getElementById('getText');
+const users = document.getElementById('getUsers');
 const output = document.getElementById('output');
 
-button.addEventListener('click', getText);
+text.addEventListener('click', getText);
+users.addEventListener('click', getUsers);
 
+// Get data by txt file
 function getText() {
 
     // fetch('sample.txt')
@@ -15,7 +18,6 @@ function getText() {
     //         console.log(data);
     //     })
 
-
     fetch('sample.txt')
 
         .then((response) => response.text())
@@ -26,7 +28,34 @@ function getText() {
         })
 
         .catch((error) => console.log(error))
+}
 
+// Get data by JSON file
+function getUsers() {
 
+    fetch('users.json')
+
+        .then((response) => response.json())
+
+        .then((data) => {
+
+            let outputUsers = '<h2>Users</h2>'
+
+            data.forEach((user) => {
+
+                outputUsers += `
+                <ul>
+                    <li>${user.id}</li>
+                    <li>${user.name}</li>
+                    <li>${user.email}</li>
+                </ul>`
+
+            })
+
+            output.innerHTML = outputUsers
+
+        })
+
+        .catch((error) => console.log(error))
 }
 
