@@ -1,11 +1,13 @@
 const text = document.getElementById('getText');
 const users = document.getElementById('getUsers');
 const posts = document.getElementById('getPosts');
+const addPost = document.getElementById('addPost');
 const output = document.getElementById('output');
 
 text.addEventListener('click', getText);
 users.addEventListener('click', getUsers);
 posts.addEventListener('click', getPosts);
+addPost.addEventListener('submit', addPosts);
 
 // Get data by txt file
 function getText() {
@@ -46,10 +48,10 @@ function getUsers() {
             data.forEach((user) => {
 
                 outputUsers += `
-                <ul>
-                    <li>${user.id}</li>
-                    <li>${user.name}</li>
-                    <li>${user.email}</li>
+                <ul class='list-group mb-3'>
+                    <li class='list-group-item'>${user.id}</li>
+                    <li class='list-group-item'>${user.name}</li>
+                    <li class='list-group-item'>${user.email}</li>
                 </ul>`
 
             })
@@ -75,7 +77,7 @@ function getPosts() {
             data.forEach((post) => {
 
                 outputPosts += `
-                <div>
+                <div class='card card-body mb-3'>
                     <h3>${post.id} ${post.title}</h3>
                     <p>${post.body}</p>
                 </div>`
@@ -87,4 +89,33 @@ function getPosts() {
         })
 
         .catch((error) => console.log(error))
+}
+
+// Add post 
+function addPosts(e) {
+
+    e.preventDefault();
+
+    const title = document.getElementById('title').value;
+    const body = document.getElementById('body').value;
+
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ title: title, body: body })
+    })
+
+        .then((response) => response.json())
+
+        .then((data) => {
+
+            console.log(data);
+
+        })
+
+        .catch((error) => console.log(error))
+
 }
